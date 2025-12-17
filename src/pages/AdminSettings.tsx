@@ -1,169 +1,254 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Save, RotateCcw, ArrowLeft, Shield } from 'lucide-react';
+import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useBrand } from '@/context/BrandContext';
+import { Save, Upload, RotateCcw, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const AdminSettings = () => {
   const { config, updateConfig, resetConfig } = useBrand();
   const { toast } = useToast();
-  
-  const [formData, setFormData] = useState({
-    name: config.name,
-    tagline: config.tagline,
-    phone: config.phone,
-    whatsapp: config.whatsapp,
-    location: config.location,
-    hours: config.hours,
-    tiktok: config.tiktok,
-    instagram: config.instagram,
-    facebook: config.facebook,
-  });
+  const [formData, setFormData] = useState(config);
+  const [logoPreview, setLogoPreview] = useState(config.logo);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const handleInputChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setLogoPreview(base64String);
+        setFormData({ ...formData, logo: base64String });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSave = () => {
     updateConfig(formData);
     toast({
       title: "Settings Saved! ✅",
-      description: "Your brand settings have been updated.",
+      description: "Brand configuration has been updated successfully.",
     });
   };
 
   const handleReset = () => {
     resetConfig();
-    setFormData({
-      name: "Ngokoz Inn",
-      tagline: "We're Hot & Spicy. Literally!!",
-      phone: "+254 700 000 000",
-      whatsapp: "+254700000000",
-      location: "Ongata Rongai, Kenya",
-      hours: "Mon-Sun: 10AM - 10PM",
-      tiktok: "@ngokozinn",
-      instagram: "@ngokozinn",
-      facebook: "NgokozInn",
-    });
+    setFormData(config);
+    setLogoPreview(config.logo);
     toast({
-      title: "Settings Reset",
-      description: "Brand settings restored to default.",
+      title: "Settings Reset! 🔄",
+      description: "Brand configuration has been reset to default.",
     });
   };
 
-  const fields = [
-    { name: 'name', label: 'Restaurant Name', placeholder: 'e.g., Ngokoz Inn' },
-    { name: 'tagline', label: 'Tagline', placeholder: "e.g., We're Hot & Spicy!" },
-    { name: 'phone', label: 'Phone Number', placeholder: '+254 700 000 000' },
-    { name: 'whatsapp', label: 'WhatsApp (no spaces)', placeholder: '+254700000000' },
-    { name: 'location', label: 'Location', placeholder: 'City, Country' },
-    { name: 'hours', label: 'Opening Hours', placeholder: 'Mon-Sun: 10AM - 10PM' },
-    { name: 'tiktok', label: 'TikTok Handle', placeholder: '@yourbrand' },
-    { name: 'instagram', label: 'Instagram Handle', placeholder: '@yourbrand' },
-    { name: 'facebook', label: 'Facebook Page', placeholder: 'YourBrand' },
-  ];
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card border-b border-border sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-            </Link>
-            <div>
-              <h1 className="font-display font-bold text-lg">Brand Settings</h1>
-              <p className="text-xs text-muted-foreground">Admin Only</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-sm font-semibold">
-            <Shield className="w-4 h-4" /> Admin
-          </div>
-        </div>
-      </header>
-
-      {/* Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          {/* Info Banner */}
-          <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 mb-8">
-            <p className="text-sm text-foreground">
-              <strong>White-Label Mode:</strong> Update the brand settings below to customize this 
-              website for a different restaurant. All text throughout the site will update automatically.
+    <Layout>
+      <section className="py-12 bg-background">
+        <div className="container max-w-4xl">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="font-display font-black text-3xl md:text-4xl mb-2">
+              White-Label <span className="text-gradient">Settings</span>
+            </h1>
+            <p className="text-muted-foreground">
+              Customize your brand identity, contact information, and social media links.
             </p>
           </div>
 
-          {/* Form */}
-          <div className="space-y-4">
-            {fields.map((field) => (
-              <div key={field.name} className="p-4 rounded-2xl bg-card border border-border">
-                <label className="block font-semibold text-foreground mb-2">
-                  {field.label}
-                </label>
-                <input
-                  type="text"
-                  name={field.name}
-                  value={formData[field.name as keyof typeof formData]}
-                  onChange={handleChange}
-                  placeholder={field.placeholder}
-                  className="w-full p-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                />
-              </div>
-            ))}
-          </div>
+          {/* Settings Form */}
+          <div className="bg-card border border-border rounded-3xl p-6 md:p-8 space-y-8">
 
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <Button variant="hero" size="lg" onClick={handleSave} className="flex-1">
-              <Save className="w-5 h-5" /> Save Changes
-            </Button>
-            <Button variant="outline" size="lg" onClick={handleReset}>
-              <RotateCcw className="w-5 h-5" /> Reset to Default
-            </Button>
-          </div>
-
-          {/* Preview */}
-          <div className="mt-12">
-            <h2 className="font-display font-bold text-xl text-foreground mb-4">Live Preview</h2>
-            <div className="p-6 rounded-3xl bg-card border border-border">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-14 h-14 rounded-full brand-gradient flex items-center justify-center">
-                  <span className="text-2xl">🍗</span>
+            {/* Logo Upload */}
+            <div>
+              <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-primary" />
+                Brand Logo
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="logo">Upload Logo</Label>
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      id="logo"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="logo"
+                      className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer"
+                    >
+                      <Upload className="w-5 h-5" />
+                      <span className="text-sm font-medium">Choose Image</span>
+                    </label>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Recommended: Square image, 512x512px, PNG or JPG
+                  </p>
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-xl text-foreground">{formData.name}</h3>
-                  <p className="text-muted-foreground">{formData.tagline}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                <div className="p-2 rounded-lg bg-muted">
-                  <span className="text-muted-foreground">📍</span> {formData.location}
-                </div>
-                <div className="p-2 rounded-lg bg-muted">
-                  <span className="text-muted-foreground">📞</span> {formData.phone}
-                </div>
-                <div className="p-2 rounded-lg bg-muted">
-                  <span className="text-muted-foreground">🕐</span> {formData.hours}
-                </div>
-                <div className="p-2 rounded-lg bg-muted">
-                  <span className="text-muted-foreground">📱</span> {formData.tiktok}
+                  <Label>Preview</Label>
+                  <div className="mt-2 w-32 h-32 rounded-2xl border-2 border-border overflow-hidden bg-muted flex items-center justify-center">
+                    {logoPreview ? (
+                      <img src={logoPreview} alt="Logo preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <ImageIcon className="w-12 h-12 text-muted-foreground" />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
+
+            <hr className="border-border" />
+
+            {/* Brand Identity */}
+            <div>
+              <h2 className="font-display font-bold text-xl mb-4">Brand Identity</h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Business Name</Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    placeholder="e.g., Ngokoz Inn"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="tagline">Tagline</Label>
+                  <Input
+                    id="tagline"
+                    value={formData.tagline}
+                    onChange={(e) => handleInputChange('tagline', e.target.value)}
+                    placeholder="e.g., We're Hot & Spicy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr className="border-border" />
+
+            {/* Contact Information */}
+            <div>
+              <h2 className="font-display font-bold text-xl mb-4">Contact Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    placeholder="+254 759 564 797"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="whatsapp">WhatsApp Number (without +)</Label>
+                  <Input
+                    id="whatsapp"
+                    value={formData.whatsapp}
+                    onChange={(e) => handleInputChange('whatsapp', e.target.value)}
+                    placeholder="254759564797"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="location">Location/Address</Label>
+                  <Input
+                    id="location"
+                    value={formData.location}
+                    onChange={(e) => handleInputChange('location', e.target.value)}
+                    placeholder="JQ59+QP8, Near Mbabathi Academy..."
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="hours">Opening Hours</Label>
+                  <Input
+                    id="hours"
+                    value={formData.hours}
+                    onChange={(e) => handleInputChange('hours', e.target.value)}
+                    placeholder="Mon-Sun: 8AM - 11PM"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr className="border-border" />
+
+            {/* Social Media */}
+            <div>
+              <h2 className="font-display font-bold text-xl mb-4">Social Media</h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="tiktok">TikTok Handle</Label>
+                  <Input
+                    id="tiktok"
+                    value={formData.tiktok}
+                    onChange={(e) => handleInputChange('tiktok', e.target.value)}
+                    placeholder="@ngokoz.inn"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="instagram">Instagram Handle</Label>
+                  <Input
+                    id="instagram"
+                    value={formData.instagram}
+                    onChange={(e) => handleInputChange('instagram', e.target.value)}
+                    placeholder="@ngokoz_"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="facebook">Facebook Page</Label>
+                  <Input
+                    id="facebook"
+                    value={formData.facebook}
+                    onChange={(e) => handleInputChange('facebook', e.target.value)}
+                    placeholder="NgokozInn"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr className="border-border" />
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Button
+                onClick={handleSave}
+                size="lg"
+                className="flex-1"
+              >
+                <Save className="w-5 h-5 mr-2" />
+                Save Changes
+              </Button>
+              <Button
+                onClick={handleReset}
+                variant="outline"
+                size="lg"
+                className="flex-1"
+              >
+                <RotateCcw className="w-5 h-5 mr-2" />
+                Reset to Default
+              </Button>
+            </div>
           </div>
 
-          {/* Footer Note */}
-          <p className="text-center text-sm text-muted-foreground mt-8">
-            Changes are saved to browser storage and will persist across sessions.
-          </p>
+          {/* Info Box */}
+          <div className="mt-6 p-4 rounded-2xl bg-primary/10 border border-primary/20">
+            <p className="text-sm text-foreground">
+              <strong>💡 Tip:</strong> Changes are saved to your browser's local storage.
+              To make changes permanent across devices, you'll need to update the default configuration in the code.
+            </p>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </Layout>
   );
 };
 
