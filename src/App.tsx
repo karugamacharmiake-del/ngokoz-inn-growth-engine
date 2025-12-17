@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BrandProvider } from "@/context/BrandContext";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Pages
 import Index from "./pages/Index";
@@ -14,6 +15,7 @@ import Contact from "./pages/Contact";
 import Reviews from "./pages/Reviews";
 import ReviewSubmit from "./pages/ReviewSubmit";
 import Walkthrough from "./pages/Walkthrough";
+import Roadmap from "./pages/Roadmap";
 import AdminSettings from "./pages/AdminSettings";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +28,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/menu" element={<Menu />} />
@@ -35,6 +38,7 @@ const App = () => (
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/review/submit" element={<ReviewSubmit />} />
             <Route path="/walkthrough" element={<Walkthrough />} />
+            <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/mash/settings" element={<AdminSettings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

@@ -41,6 +41,7 @@ export const mockReviews: Review[] = [
     rating: 5,
     comment: 'The shawarma is massive and so tasty. Drive-in service is super convenient!',
     date: '2024-01-14',
+    image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&h=300&fit=crop',
   },
   {
     id: '3',
@@ -50,7 +51,7 @@ export const mockReviews: Review[] = [
     rating: 4,
     comment: 'Great food and vibes. The kids love the family packages. Will definitely come back!',
     date: '2024-01-13',
-    image: 'https://images.unsplash.com/photo-1568901346341-c289b81c0c8b?w=400&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400&h=300&fit=crop',
   },
   {
     id: '4',
@@ -60,6 +61,7 @@ export const mockReviews: Review[] = [
     rating: 5,
     comment: 'Finally a proper burger spot in Rongai! The Ngokoz Special is my go-to.',
     date: '2024-01-12',
+    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop',
   },
   {
     id: '5',
@@ -79,6 +81,7 @@ export const mockReviews: Review[] = [
     rating: 5,
     comment: 'The family feast platter is perfect for weekend gatherings. Everyone loved it!',
     date: '2024-01-10',
+    image: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop',
   },
 ];
 
@@ -320,4 +323,14 @@ export const walkthroughSteps = [
     description: 'More public reviews = More customers = More growth. Simple!',
     icon: '📈',
   },
+];
+
+// TikTok video IDs
+export const tiktokVideos = [
+  '7502710766307495173',
+  '7482016158971923717',
+  '7513129111221538054',
+  '7581800113815751992',
+  '7473838318074006790',
+  '7582116499339398411',
 ];

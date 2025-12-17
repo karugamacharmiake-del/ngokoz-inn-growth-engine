@@ -20,36 +20,49 @@ const ReviewsPreview = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {displayReviews.map((review, index) => (
-            <div 
+            <div
               key={review.id}
-              className="p-6 rounded-3xl bg-card border border-border hover:shadow-medium transition-all duration-300 animate-fade-in"
+              className="rounded-3xl bg-card border border-border hover:shadow-medium transition-all duration-300 animate-fade-in overflow-hidden"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Stars */}
-              <div className="flex gap-1 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i}
-                    className={`w-5 h-5 ${i < review.rating ? 'text-primary fill-primary' : 'text-muted'}`}
+              {/* Review Image */}
+              {review.image && (
+                <div className="w-full h-48 overflow-hidden">
+                  <img
+                    src={review.image}
+                    alt={`Review by ${review.name}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
-                ))}
-              </div>
-              
-              {/* Comment */}
-              <p className="text-foreground mb-4 font-medium">
-                "{review.comment}"
-              </p>
-              
-              {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full brand-gradient flex items-center justify-center text-primary-foreground font-bold">
-                  {review.name.charAt(0)}
                 </div>
-                <div>
-                  <p className="font-semibold text-foreground">{review.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(review.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </p>
+              )}
+
+              <div className="p-6">
+                {/* Stars */}
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${i < review.rating ? 'text-primary fill-primary' : 'text-muted'}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Comment */}
+                <p className="text-foreground mb-4 font-medium">
+                  "{review.comment}"
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full brand-gradient flex items-center justify-center text-primary-foreground font-bold">
+                    {review.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">{review.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(review.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

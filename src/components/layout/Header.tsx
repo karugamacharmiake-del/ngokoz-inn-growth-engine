@@ -24,21 +24,22 @@ const Header = () => {
       {/* Top Info Bar */}
       <div className="bg-secondary text-secondary-foreground">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-between py-2 text-sm gap-2">
-            <div className="flex items-center gap-4 flex-wrap">
-              <a href={`https://www.google.com/maps/search/${encodeURIComponent(config.location)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-                <MapPin className="w-4 h-4" />
-                <span className="hidden sm:inline">{config.location}</span>
-                <span className="sm:hidden">Location</span>
+          <div className="flex flex-wrap items-center justify-between py-2 text-xs md:text-sm gap-2">
+            <div className="flex items-center gap-2 md:gap-4 flex-wrap">
+              <a href="https://www.google.com/maps/place/Ngokoz+Eatery/@-1.3905251,36.7668344,17z/data=!3m1!4b1!4m6!3m5!1s0x182f05005b5dd3ff:0xb59a1df2b18b65de!8m2!3d-1.3905251!4d36.7694093!16s%2Fg%2F11yg9s3ct3?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
+                <MapPin className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
+                <span className="hidden lg:inline">{config.location}</span>
+                <span className="hidden sm:inline lg:hidden">Near Mbabathi Academy, Rongai</span>
+                <span className="sm:hidden">Rongai</span>
               </a>
               <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                <span className="hidden md:inline">Open Daily: 10AM - 10PM</span>
-                <span className="md:hidden">10AM - 10PM</span>
+                <Clock className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
+                <span className="hidden md:inline">Open Daily: 8AM - 11PM</span>
+                <span className="md:hidden">8AM - 11PM</span>
               </span>
             </div>
             <a href={`tel:${config.phone}`} className="flex items-center gap-1 font-semibold hover:text-primary transition-colors">
-              <Phone className="w-4 h-4" />
+              <Phone className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
               <span>{config.phone}</span>
             </a>
           </div>
@@ -51,8 +52,12 @@ const Header = () => {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full brand-gradient flex items-center justify-center">
-                <span className="text-xl md:text-2xl">🍗</span>
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-primary shadow-md">
+                <img
+                  src="/logo.jpg"
+                  alt={config.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="font-display font-extrabold text-lg md:text-xl text-foreground">
                 {config.name}
@@ -65,11 +70,10 @@ const Header = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${
-                    isActive(link.path)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted'
-                  }`}
+                  className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive(link.path)
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-foreground hover:bg-muted'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -104,11 +108,10 @@ const Header = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`px-4 py-3 rounded-xl font-semibold transition-all ${
-                  isActive(link.path)
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-muted'
-                }`}
+                className={`px-4 py-3 rounded-xl font-semibold transition-all ${isActive(link.path)
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-foreground hover:bg-muted'
+                  }`}
               >
                 {link.label}
               </Link>

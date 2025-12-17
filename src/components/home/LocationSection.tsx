@@ -18,8 +18,8 @@ const LocationSection = () => {
                   <MapPin className="w-16 h-16 text-primary mx-auto mb-4" />
                   <p className="text-lg font-semibold text-foreground mb-2">Find Us in Rongai</p>
                   <p className="text-muted-foreground">{config.location}</p>
-                  <a 
-                    href={`https://www.google.com/maps/search/${encodeURIComponent(config.location)}`}
+                  <a
+                    href="https://www.google.com/maps/place/Ngokoz+Eatery/@-1.3905251,36.7668344,17z/data=!3m1!4b1!4m6!3m5!1s0x182f05005b5dd3ff:0xb59a1df2b18b65de!8m2!3d-1.3905251!4d36.7694093!16s%2Fg%2F11yg9s3ct3?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 mt-4 text-primary font-semibold hover:underline"
@@ -37,7 +37,7 @@ const LocationSection = () => {
               Come <span className="text-gradient">Visit Us!</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              We're right in the heart of Rongai. Pull up, order from your car, and enjoy the 
+              We're right in the heart of Rongai. Pull up, order from your car, and enjoy the
               best food in town. Easy to find, hard to leave!
             </p>
 
@@ -74,8 +74,8 @@ const LocationSection = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <a 
-                href={`https://www.google.com/maps/search/${encodeURIComponent(config.location)}`}
+              <a
+                href="https://www.google.com/maps/place/Ngokoz+Eatery/@-1.3905251,36.7668344,17z/data=!3m1!4b1!4m6!3m5!1s0x182f05005b5dd3ff:0xb59a1df2b18b65de!8m2!3d-1.3905251!4d36.7694093!16s%2Fg%2F11yg9s3ct3?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
               >

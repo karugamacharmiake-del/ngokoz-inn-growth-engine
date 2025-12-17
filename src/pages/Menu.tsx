@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { menuItems, MenuItem } from '@/data/mockData';
-import { Flame, Star, Car, Phone } from 'lucide-react';
+import { Flame, Star, Car, Phone, Navigation } from 'lucide-react';
 import { useBrand } from '@/context/BrandContext';
 
 type Category = 'all' | MenuItem['category'];
@@ -21,8 +21,8 @@ const Menu = () => {
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const { config } = useBrand();
 
-  const filteredItems = activeCategory === 'all' 
-    ? menuItems 
+  const filteredItems = activeCategory === 'all'
+    ? menuItems
     : menuItems.filter(item => item.category === activeCategory);
 
   return (
@@ -34,7 +34,7 @@ const Menu = () => {
             Our <span className="text-gradient">Menu</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            From crispy chicken to loaded shawarmas and juicy burgers – 
+            From crispy chicken to loaded shawarmas and juicy burgers –
             every bite is an experience!
           </p>
           <div className="flex items-center justify-center gap-4 text-sm">
@@ -53,11 +53,10 @@ const Menu = () => {
               <button
                 key={cat.value}
                 onClick={() => setActiveCategory(cat.value)}
-                className={`flex-shrink-0 snap-center px-4 py-2 rounded-xl font-semibold transition-all whitespace-nowrap ${
-                  activeCategory === cat.value
-                    ? 'bg-primary text-primary-foreground shadow-medium'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                }`}
+                className={`flex-shrink-0 snap-center px-4 py-2 rounded-xl font-semibold transition-all whitespace-nowrap ${activeCategory === cat.value
+                  ? 'bg-primary text-primary-foreground shadow-medium'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  }`}
               >
                 <span className="mr-1">{cat.emoji}</span> {cat.label}
               </button>
@@ -71,7 +70,7 @@ const Menu = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item, index) => (
-              <Link 
+              <Link
                 key={item.id}
                 to={`/menu/${item.id}`}
                 className="group p-5 rounded-3xl bg-card border border-border hover:border-primary/50 hover:shadow-medium transition-all duration-300 animate-fade-in"
@@ -108,7 +107,7 @@ const Menu = () => {
                 <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                   {item.description}
                 </p>
-                
+
                 {/* Price & CTA */}
                 <div className="flex items-center justify-between">
                   <span className="font-display font-bold text-xl text-primary">
@@ -132,7 +131,7 @@ const Menu = () => {
               Ready to Order? 🚗
             </h2>
             <p className="text-muted-foreground mb-6">
-              Drive in to {config.name} and enjoy the best food in Rongai. 
+              Drive in to {config.name} and enjoy the best food in Rongai.
               We're waiting to serve you!
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -141,8 +140,10 @@ const Menu = () => {
                   <Phone className="w-5 h-5" /> Call to Reserve
                 </Button>
               </a>
-              <a href={`https://www.google.com/maps/search/${encodeURIComponent(config.location)}`} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="lg">Visit Us Today</Button>
+              <a href="https://www.google.com/maps/place/Ngokoz+Eatery/@-1.3905251,36.7668344,17z/data=!3m1!4b1!4m6!3m5!1s0x182f05005b5dd3ff:0xb59a1df2b18b65de!8m2!3d-1.3905251!4d36.7694093!16s%2Fg%2F11yg9s3ct3?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+                <Button variant="hero" size="lg">
+                  <Navigation className="w-5 h-5" /> Directions
+                </Button>
               </a>
             </div>
           </div>

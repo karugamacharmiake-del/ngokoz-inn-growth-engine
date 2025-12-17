@@ -25,25 +25,37 @@ const defaultConfig: BrandConfig = {
   tagline: "We're Hot & Spicy. Literally!!",
   logo: "/logo.png",
   favicon: "/favicon.ico",
-  phone: "+254 700 000 000",
-  whatsapp: "+254700000000",
-  location: "Ongata Rongai, Kenya",
-  hours: "Mon-Sun: 10AM - 10PM",
-  tiktok: "@ngokozinn",
-  instagram: "@ngokozinn",
+  phone: "+254 759 564 797",
+  whatsapp: "254759564797",
+  location: "JQ59+QP8, Near Mbabathi Academy, Off Magadi Road, Rongai, Nairobi",
+  hours: "Mon-Sun: 8AM - 11PM",
+  tiktok: "@ngokoz.inn",
+  instagram: "@ngokoz_",
   facebook: "NgokozInn",
 };
+
+const CONFIG_VERSION = '2.0'; // Increment to force refresh
 
 const BrandContext = createContext<BrandContextType | undefined>(undefined);
 
 export const BrandProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [config, setConfig] = useState<BrandConfig>(() => {
     const saved = localStorage.getItem('brandConfig');
-    return saved ? JSON.parse(saved) : defaultConfig;
+    const savedVersion = localStorage.getItem('brandConfigVersion');
+
+    // If version changed or no version, use default config
+    if (!saved || savedVersion !== CONFIG_VERSION) {
+      localStorage.setItem('brandConfigVersion', CONFIG_VERSION);
+      localStorage.setItem('brandConfig', JSON.stringify(defaultConfig));
+      return defaultConfig;
+    }
+
+    return JSON.parse(saved);
   });
 
   useEffect(() => {
     localStorage.setItem('brandConfig', JSON.stringify(config));
+    localStorage.setItem('brandConfigVersion', CONFIG_VERSION);
     document.title = config.name;
   }, [config]);
 

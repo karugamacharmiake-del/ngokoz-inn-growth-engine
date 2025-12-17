@@ -1,22 +1,19 @@
 import { ReactNode } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import FloatingWalkthroughButton from '../FloatingWalkthroughButton';
 
 interface LayoutProps {
   children: ReactNode;
-  hideFooter?: boolean;
 }
 
-const Layout = ({ children, hideFooter = false }: LayoutProps) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 pt-24 md:pt-28">
+      <main className="flex-1">
         {children}
       </main>
-      {!hideFooter && <Footer />}
-      <FloatingWalkthroughButton />
+      <Footer />
     </div>
   );
 };
