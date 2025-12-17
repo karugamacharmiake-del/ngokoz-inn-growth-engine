@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { menuItems, MenuItem } from '@/data/mockData';
-import { Flame, Star, Car } from 'lucide-react';
+import { Flame, Star, Car, Phone } from 'lucide-react';
 import { useBrand } from '@/context/BrandContext';
 
 type Category = 'all' | MenuItem['category'];
@@ -45,7 +46,7 @@ const Menu = () => {
       </section>
 
       {/* Category Tabs */}
-      <section className="sticky top-16 md:top-20 z-40 bg-card/95 backdrop-blur-md border-b border-border py-4">
+      <section className="sticky top-24 md:top-28 z-40 bg-card/95 backdrop-blur-md border-b border-border py-4">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4 md:justify-center">
             {categories.map((cat) => (
@@ -70,8 +71,9 @@ const Menu = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item, index) => (
-              <div 
+              <Link 
                 key={item.id}
+                to={`/menu/${item.id}`}
                 className="group p-5 rounded-3xl bg-card border border-border hover:border-primary/50 hover:shadow-medium transition-all duration-300 animate-fade-in"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
@@ -100,20 +102,23 @@ const Menu = () => {
                 </div>
 
                 {/* Info */}
-                <h3 className="font-display font-bold text-lg text-foreground mb-1">
+                <h3 className="font-display font-bold text-lg text-foreground mb-1 group-hover:text-primary transition-colors">
                   {item.name}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                   {item.description}
                 </p>
                 
-                {/* Price */}
+                {/* Price & CTA */}
                 <div className="flex items-center justify-between">
                   <span className="font-display font-bold text-xl text-primary">
                     KSh {item.price.toLocaleString()}
                   </span>
+                  <span className="text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                    View Details →
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -131,11 +136,13 @@ const Menu = () => {
               We're waiting to serve you!
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href={`https://www.google.com/maps/search/${encodeURIComponent(config.location)}`} target="_blank" rel="noopener noreferrer">
-                <Button variant="hero" size="lg">Visit Us Today</Button>
-              </a>
               <a href={`tel:${config.phone}`}>
-                <Button variant="outline" size="lg">Call to Order</Button>
+                <Button variant="hero" size="lg">
+                  <Phone className="w-5 h-5" /> Call to Reserve
+                </Button>
+              </a>
+              <a href={`https://www.google.com/maps/search/${encodeURIComponent(config.location)}`} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg">Visit Us Today</Button>
               </a>
             </div>
           </div>

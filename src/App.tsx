@@ -8,6 +8,7 @@ import { BrandProvider } from "@/context/BrandContext";
 // Pages
 import Index from "./pages/Index";
 import Menu from "./pages/Menu";
+import MenuItemDetail from "./pages/MenuItemDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Reviews from "./pages/Reviews";
@@ -28,6 +29,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/menu/:id" element={<MenuItemDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/reviews" element={<Reviews />} />
