@@ -1,18 +1,76 @@
 import { useState } from 'react';
-import { Star, Send, CheckCircle } from 'lucide-react';
+import { Star, Send, CheckCircle, Camera, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useBrand } from '@/context/BrandContext';
+import { useToast } from '@/hooks/use-toast';
 
 const ReviewSubmit = () => {
   const { config } = useBrand();
+  const { toast } = useToast();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [feedback, setFeedback] = useState('');
-  const [contact, setContact] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [image, setImage] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Image too large",
+          description: "Please select an image under 5MB",
+          variant: "destructive"
+        });
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (rating === 0) {
+      toast({
+        title: "Rating required",
+        description: "Please tap the stars to rate your experience",
+        variant: "destructive"
+      });
+      return;
+    }
+    if (!name.trim()) {
+      toast({
+        title: "Name required",
+        description: "Please enter your name",
+        variant: "destructive"
+      });
+      return;
+    }
+    if (!email.trim()) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address",
+        variant: "destructive"
+      });
+      return;
+    }
+    if (!phone.trim()) {
+      toast({
+        title: "Phone required",
+        description: "Please enter your phone number",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     // Demo: Just show success
     setSubmitted(true);
   };
@@ -27,7 +85,7 @@ const ReviewSubmit = () => {
             <CheckCircle className="w-10 h-10 text-white" />
           </div>
           <h1 className="font-display font-black text-3xl text-foreground mb-4">
-            Thank You! 🎉
+            Thank You, {name}! 🎉
           </h1>
           <p className="text-muted-foreground mb-6">
             {isPositive 
@@ -52,7 +110,10 @@ const ReviewSubmit = () => {
               setSubmitted(false);
               setRating(0);
               setFeedback('');
-              setContact('');
+              setName('');
+              setEmail('');
+              setPhone('');
+              setImage(null);
             }}
           >
             Submit Another Review
@@ -79,11 +140,11 @@ const ReviewSubmit = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Star Rating */}
           <div className="p-6 rounded-3xl bg-card border border-border">
             <label className="block text-center font-semibold text-foreground mb-4">
-              Tap to Rate
+              Tap to Rate <span className="text-accent">*</span>
             </label>
             <div className="flex justify-center gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -112,10 +173,55 @@ const ReviewSubmit = () => {
             )}
           </div>
 
-          {/* Feedback */}
-          <div className="p-6 rounded-3xl bg-card border border-border">
+          {/* Name */}
+          <div className="p-5 rounded-3xl bg-card border border-border">
             <label className="block font-semibold text-foreground mb-2">
-              Tell Us More (Optional)
+              Your Name <span className="text-accent">*</span>
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              className="w-full p-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div className="p-5 rounded-3xl bg-card border border-border">
+            <label className="block font-semibold text-foreground mb-2">
+              Email Address <span className="text-accent">*</span>
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              className="w-full p-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+              required
+            />
+          </div>
+
+          {/* Phone */}
+          <div className="p-5 rounded-3xl bg-card border border-border">
+            <label className="block font-semibold text-foreground mb-2">
+              Phone Number <span className="text-accent">*</span>
+            </label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+254 712 345 678"
+              className="w-full p-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+              required
+            />
+          </div>
+
+          {/* Feedback */}
+          <div className="p-5 rounded-3xl bg-card border border-border">
+            <label className="block font-semibold text-foreground mb-2">
+              Tell Us More
             </label>
             <textarea
               value={feedback}
@@ -125,20 +231,40 @@ const ReviewSubmit = () => {
             />
           </div>
 
-          {/* Contact */}
-          <div className="p-6 rounded-3xl bg-card border border-border">
+          {/* Image Upload */}
+          <div className="p-5 rounded-3xl bg-card border border-border">
             <label className="block font-semibold text-foreground mb-2">
-              Email or Phone (Optional)
+              Add a Photo (Optional)
             </label>
-            <input
-              type="text"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              placeholder="So we can follow up if needed"
-              className="w-full p-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-            />
+            {image ? (
+              <div className="relative">
+                <img 
+                  src={image} 
+                  alt="Review" 
+                  className="w-full h-48 object-cover rounded-xl"
+                />
+                <button
+                  type="button"
+                  onClick={() => setImage(null)}
+                  className="absolute top-2 right-2 p-2 rounded-full bg-background/80 hover:bg-background transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-primary transition-colors">
+                <Camera className="w-8 h-8 text-muted-foreground mb-2" />
+                <span className="text-sm text-muted-foreground">Tap to upload photo</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+            )}
             <p className="text-xs text-muted-foreground mt-2">
-              We'll never share your info without permission.
+              Max 5MB. Your photo may be displayed with your review.
             </p>
           </div>
 
@@ -156,7 +282,7 @@ const ReviewSubmit = () => {
 
         {/* Footer Note */}
         <p className="text-center text-xs text-muted-foreground mt-6">
-          This helps us improve and serve you better! ❤️
+          We'll never share your info without permission. ❤️
         </p>
       </div>
     </div>
