@@ -7,7 +7,7 @@ const HeroSection = () => {
   const { config } = useBrand();
 
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5 pt-24 md:pt-28">
+    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-accent/5">
       {/* Decorative Food Emojis */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-20 left-10 text-8xl animate-float">🍗</div>
